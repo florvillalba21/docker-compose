@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+  # nombre del servicio
+  database: 
+    # imagen a utilizar
+    image: mariadb:latest
+
+    # nombre del contenedor
+    container_name: mi-mariadb
+
+    # variables de entorno
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: mypassword
+      MYSQL_DATABASE: test
+
+    # mapeo de puertos
+    ports:
+      - 3306:3306
+
+    volumes:
+      - ./backend/dbdata/mariadb:/var/lib/mysql
+
+    networks:
+      - my-network
+
+
+  servidor:
+    # nombre del contenedor
+    container_name: express-server
+
+    # imagen a utilizar
+    build:
+      # carpeta donde se encuentra el código
+      context: ./backend
+
+      # ubicación del Dockerfile
+      dockerfile: Dockerfile
+
+    # variables de entorno
+    environment:
+      PORT: 3000
+      DATABASE_HOST: database
+      DATABASE_USER: root
+      DATABASE_PASSWORD: mypassword
+      DATABASE_NAME: test
+
+    # si falla, intenta reiniciarse
+    restart: always
+
+    # dependencias del contenedor
+    depends_on:
+      - database
+
+    # mapeo de puertos
+    ports:
+      - 3000:3000
+
+    volumes:
+      - ./backend:/server
+
+networks:
+  my-network:
