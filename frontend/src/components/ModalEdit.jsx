@@ -1,25 +1,32 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ProductsContext } from "../context/ProductsContext";
 
 export const ModalEdit = ({ id }) => {
+  const {data, setData} = useContext(ProductsContext);
   const url = `http://localhost:3000/editProduct/${id}`;
-  const [data, setData] = useState({
+  const [prod, setProd] = useState({
     name: "",
     price: null,
   });
 
   const savedChanges = () => {
     axios
-      .put(url, data)
+      .put(url, prod)
       .then((res) => {
+        setData((prevProducts) =>
+        prevProducts.map((product) =>
+          product.id === id ? { ...product, ...prod } : product
+        )
+      );
         console.log(res);
       })
       .catch((err) => console.log(err));
   };
 
   const handleinput = (event) => {
-    setData({
-      ...data,
+    setProd({
+      ...prod,
       [event.target.name]: event.target.value,
     });
   };

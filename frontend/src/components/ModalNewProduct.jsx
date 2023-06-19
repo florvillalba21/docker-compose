@@ -1,9 +1,11 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ProductsContext } from "../context/ProductsContext";
 
 export const ModalNewproduct = () => {
+  const {data, setData} = useContext(ProductsContext);
   const url = "http://localhost:3000/newProduct";
-  const [product, setProducts] = useState({
+  const [product, setProduct] = useState({
     name: "",
     price: null,
   });
@@ -15,6 +17,7 @@ export const ModalNewproduct = () => {
       .then((res) => {
 
         console.log(res);
+        setData((prevProducts) => [...prevProducts, product]);
         
       })
       .catch((err) => {
@@ -23,7 +26,7 @@ export const ModalNewproduct = () => {
   };
 
   const handleinput = (event) => {
-    setProducts({
+    setProduct({
       ...product,
       [event.target.name]: event.target.value,
     });

@@ -1,9 +1,10 @@
 import axios from "axios";
-import io from 'socket.io-client';
+import io from "socket.io-client";
 import { useEffect, useState } from "react";
 import { ModalEdit } from "./ModalEdit";
 import { ModalDelete } from "./ModalDelete";
 import { ModalNewproduct } from "./ModalNewProduct";
+import { ProductsContext } from "../context/ProductsContext";
 
 export const Listproducts = () => {
   const url = "http://localhost:3000/getProducts";
@@ -12,7 +13,6 @@ export const Listproducts = () => {
   const [idDelete, setIdDelete] = useState(null);
 
   useEffect(() => {
-
     axios
       .get(url)
       .then((res) => {
@@ -24,14 +24,15 @@ export const Listproducts = () => {
       .catch((err) => {
         console.log(err);
       });
-
   }, []);
 
   return (
     <>
-      <ModalNewproduct />
-      <ModalEdit id={idEdit} />
-      <ModalDelete id={idDelete} />
+      <ProductsContext.Provider value={{data, setData}}>
+        <ModalNewproduct />
+        <ModalEdit id={idEdit} />
+        <ModalDelete id={idDelete} />
+      </ProductsContext.Provider>
 
       <div style={{ width: "60%", margin: "0 auto" }}>
         <button
@@ -48,7 +49,7 @@ export const Listproducts = () => {
       >
         <thead>
           <tr>
-            <th>#</th>
+         
             <th>Producto</th>
             <th>Precio</th>
             <th>Opciones</th>
@@ -58,7 +59,7 @@ export const Listproducts = () => {
           {data.length > 0 &&
             data.map((value, index) => (
               <tr key={index}>
-                <th>{value.id}</th>
+
                 <td>{value.name}</td>
                 <td>{value.price}</td>
                 <td>

@@ -1,11 +1,16 @@
 import axios from "axios";
+import { useContext } from "react";
+import { ProductsContext } from "../context/ProductsContext";
 
 export const ModalDelete = ({ id }) => {
+  const {data, setData} = useContext(ProductsContext);
   const url = `http://localhost:3000/deleteProduct/${id}`;
   const saved = () => {
     axios
       .delete(url)
-      .then((res) => console.log(res))
+      .then((res) => {
+        setData((prevProducts) => prevProducts.filter((product) => product.id !== id))
+      })
       .catch((err) => console.log(err));
   };
   return (
