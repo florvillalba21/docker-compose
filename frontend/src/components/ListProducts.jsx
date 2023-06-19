@@ -28,28 +28,17 @@ export const Listproducts = () => {
 
   return (
     <>
-      <ProductsContext.Provider value={{data, setData}}>
+      <ProductsContext.Provider value={{ data, setData }}>
         <ModalNewproduct />
         <ModalEdit id={idEdit} />
         <ModalDelete id={idDelete} />
       </ProductsContext.Provider>
 
-      <div style={{ width: "60%", margin: "0 auto" }}>
-        <button
-          className="btn btn-success"
-          data-bs-toggle="modal"
-          data-bs-target="#modalNewProduct"
-        >
-          Agregar un nuevo producto
-        </button>
-      </div>
-      <table
-        className="table table-dark table-striped"
-        style={{ width: "80%", margin: "0 auto", marginTop: "50px" }}
-      >
+      <h3>PRODUCTOS</h3>
+
+      <table className="table table-dark table-striped">
         <thead>
           <tr>
-         
             <th>Producto</th>
             <th>Precio</th>
             <th>Opciones</th>
@@ -59,7 +48,6 @@ export const Listproducts = () => {
           {data.length > 0 &&
             data.map((value, index) => (
               <tr key={index}>
-
                 <td>{value.name}</td>
                 <td>{value.price}</td>
                 <td>
@@ -84,6 +72,15 @@ export const Listproducts = () => {
             ))}
         </tbody>
       </table>
+      <div style={{ margin: "0 auto" }}>
+        <button
+          className="btn btn-success"
+          data-bs-toggle="modal"
+          data-bs-target="#modalNewProduct"
+        >
+          Agregar un nuevo producto
+        </button>
+      </div>
     </>
   );
 };
