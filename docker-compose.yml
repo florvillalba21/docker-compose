@@ -5,7 +5,6 @@ services:
   database: 
     # imagen a utilizar
     image: mariadb:latest
-
     # nombre del contenedor
     container_name: mi-mariadb
 
@@ -18,11 +17,8 @@ services:
     # mapeo de puertos
     ports:
       - 3306:3306
-
     volumes:
       - ./backend/dbdata/mariadb:/var/lib/mysql
-
-
 
   servidor:
     # nombre del contenedor
@@ -32,7 +28,6 @@ services:
     build:
       # carpeta donde se encuentra el código
       context: ./backend
-
       # ubicación del Dockerfile
       dockerfile: Dockerfile
 
@@ -46,15 +41,12 @@ services:
 
     # si falla, intenta reiniciarse
     restart: always
-
     # dependencias del contenedor
     depends_on:
       - database
-
     # mapeo de puertos
     ports:
       - 3000:3000
-
     volumes:
       - ./backend:/server
 
