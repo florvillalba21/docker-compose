@@ -3,22 +3,28 @@ import { useContext, useEffect, useState } from "react";
 import { ProductsContext } from "../context/ProductsContext";
 
 export const ModalEdit = ({ id }) => {
-  const {data, setData} = useContext(ProductsContext);
+  const { data, setData } = useContext(ProductsContext);
   const url = `http://localhost:3000/editProduct/${id}`;
   const [prod, setProd] = useState({
     name: "",
     price: null,
   });
 
+  useEffect(() => {
+    const product = data.find((product) => product.id == id);
+    product && 
+    setProd({ name: product.name, price: product.price })
+    ;
+  }, [id]);
   const savedChanges = () => {
     axios
       .put(url, prod)
       .then((res) => {
         setData((prevProducts) =>
-        prevProducts.map((product) =>
-          product.id === id ? { ...product, ...prod } : product
-        )
-      );
+          prevProducts.map((product) =>
+            product.id === id ? { ...product, ...prod } : product
+          )
+        );
         console.log(res);
       })
       .catch((err) => console.log(err));
@@ -57,7 +63,7 @@ export const ModalEdit = ({ id }) => {
                   className="form-control"
                   name="name"
                   onChange={handleinput}
-                  value={data.name}
+                  value={prod.name}
                 />
               </div>
               <div>
@@ -67,7 +73,7 @@ export const ModalEdit = ({ id }) => {
                   className="form-control"
                   onChange={handleinput}
                   name="price"
-                  value={data.price}
+                  value={prod.price}
                 />
               </div>
             </div>
